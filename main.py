@@ -1,6 +1,8 @@
 from telegram.ext import Updater, CommandHandler
+import os
 
-updater = Updater(token='1699409535:AAE4oMN3JwegpsEEA_r43SS-5KX2cscCzrY', use_context=True)
+
+updater = Updater(token=os.environ['TOKEN_BOT'], use_context=True)
 
 
 dispatcher = updater.dispatcher
@@ -11,7 +13,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 
 def start(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot!")
 
 
 start_handler = CommandHandler('start', start)
