@@ -11,10 +11,11 @@ dispatcher = updater.dispatcher
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
 
-start_handler = CommandHandler('sta', start)
-dispatcher.add_handler(start_handler)
 
-updater.start_polling()
+start_handler = CommandHandler('start', start)
+dispatcher.add_handler(start_handler)
 
 echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)
 dispatcher.add_handler(echo_handler)
+
+updater.start_polling()
