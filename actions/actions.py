@@ -1,6 +1,8 @@
+from telegram import InlineQueryResultArticle, InputTextMessageContent
+
 
 def start(update, context):
-    if context.args[0] == 'return':
+    if context.args and context.args[0] == 'return':
         context.bot.send_message(chat_id=update.effective_chat.id, text="return")
     else:
         context.bot.send_message(chat_id=update.effective_chat.id, text="main")
