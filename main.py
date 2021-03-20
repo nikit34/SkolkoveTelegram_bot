@@ -18,4 +18,7 @@ dispatcher.add_handler(start_handler)
 echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)
 dispatcher.add_handler(echo_handler)
 
+caps_handler = CommandHandler('caps', caps)
+dispatcher.add_handler(caps_handler)
+
 updater.start_polling()
