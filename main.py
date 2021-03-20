@@ -2,7 +2,7 @@ import os
 import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
-from .actions.actions import *
+from actions.actions import *
 
 
 updater = Updater(token=os.environ['TOKEN_BOT'], use_context=True)
