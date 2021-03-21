@@ -19,6 +19,10 @@ def history_books(update, context, act):
     if act == 'take':
         num = search_empty(wks)
         wks.update_row(num, [update['message']['chat']['username'], context.chat_data['book'], str(date.today)], 0)
+        sh = gc.open('all_books')
+        wks = sh.sheet1
+        books = wks.get_col(4)
+        #book = books[]
     elif act == 'return':
         num = search_book(wks)
         wks.update_cells((num, 5), str(date.today))
@@ -36,12 +40,12 @@ def current_books(update, context):
 
 def search_books(update, context):
     gc = pygsheets.authorize()
-    sh = gc.open('books_history')
+    sh = gc.open('all_books')
     wks = sh.sheet1
-    i = 1
+    books = wks.get_col(4)
+    the_book = context.chat_data['book'].lower()
     results = []
-    while wks.cell((i, 3)) != '':
-        if update.message.text in wks.cell((i, 3)):
-            results.append(wks.cell((i, 3)).value)
-        i += 1
+    for b in books:
+        if the_book in b.lower():
+            results.append(b)
     return results
