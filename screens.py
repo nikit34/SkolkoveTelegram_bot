@@ -106,11 +106,11 @@ def ShareBook(update, context):
 
 
 def RecordBook(update, context):
-    context.bot.send_message(
-        chat_id='-1001267184860',
-        text=f'@{context.chat_data.get("user")} взял почитать книгу {context.chat_data["book"]}'
-        # text=f'"{context.chat_data.get("user")} взял почитать книгу {context.chat_data["book"]}'
-    )
+   # context.bot.send_message(
+   #     chat_id='-1001267184860',
+   #     text=f'@{context.chat_data.get("user")} взял почитать книгу {context.chat_data["book"]}'
+   #     # text=f'"{context.chat_data.get("user")} взял почитать книгу {context.chat_data["book"]}'
+   # )
     keyboard = [
         [InlineKeyboardButton('Взять еще', callback_data='take_book'),
         InlineKeyboardButton('Возврат в меню', callback_data='start_menu')],
