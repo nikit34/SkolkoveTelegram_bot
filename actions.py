@@ -14,7 +14,9 @@ from screens import StartMenu, \
 def start(update, context):
     context.chat_data["user"] = update.message.chat.username
     if context.args and context.args[0] == 'return':
-        ReturnBook(update, context)
+        ReturnBook(update, context, 'return')
+    elif context.args and context.args[0] == 'return2':
+        ReturnBook(update, context, 'return2')
     else:
         context.chat_data['reply'] = False
         StartMenu(update, context)
@@ -36,9 +38,10 @@ def buttons(update, context):
     elif query.data == 'info_book':
         InfoBook(update, context)
     elif query.data.startswith('return_book'):
-        name_book = context.chat_data['list_book'][int(query.data[12:])]
+        name_book = context.chat_data['list_book'][int(query.data[12])]
         context.chat_data['book'] = name_book
-        HistoryBook(update, context)
+        pickpoint = query.data[14:]
+        HistoryBook(update, context, pickpoint)
     elif query.data == 'start_menu':
         context.chat_data['reply'] = True
         StartMenu(update, context)

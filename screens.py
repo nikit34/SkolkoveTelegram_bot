@@ -108,12 +108,12 @@ def InfoBook(update, context):
     )
 
 
-def ReturnBook(update, context):
+def ReturnBook(update, context, pickpoint):
     context.chat_data['list_book'] = current_books(update, context)
     keyboard = []
     for i, name_book in enumerate(context.chat_data['list_book']):
         row_str = str(i + 1) + '. ' + name_book
-        row_book = [InlineKeyboardButton(row_str, callback_data=f'return_book_{i}')]
+        row_book = [InlineKeyboardButton(row_str, callback_data=f'return_book_{i}_{pickpoint}')]
         keyboard.append(row_book)
     context.bot.send_message(
         chat_id=update.effective_chat.id,
@@ -121,8 +121,8 @@ def ReturnBook(update, context):
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
-def HistoryBook(update, context):
-    history_books(update, context, 'return')
+def HistoryBook(update, context, pickpoint):
+    history_books(update, context, pickpoint)
     context.bot.send_message(
         chat_id=update.effective_chat.id,
         text='Книга успешно возвращена'
