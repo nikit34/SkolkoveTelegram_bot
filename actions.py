@@ -5,7 +5,7 @@ def start(update, context):
     if context.args and context.args[0] == 'return':
         context.bot.send_message(chat_id=update.effective_chat.id, text='return')
     else:
-        StartMenu(update)
+        StartMenu(update, context)
 
 
 def buttons(update, context):
@@ -21,7 +21,7 @@ def buttons(update, context):
         RecordBook(update, context)
     elif query.data == 'list_book':
         ListBooks(update, context)
-        StartMenu(update)
+        StartMenu(update, context)
     elif query.data == 'share_book':
         ShareBook(update, context)
 

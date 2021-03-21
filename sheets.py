@@ -17,8 +17,17 @@ def history_books(update, context, act):
     sh = gc.open('books_history')
     wks = sh.sheet1
     if act == 'take':
-        num = search_empty(wks)
-        wks.update_row(num, [update['message']['chat']['username'], context.chat_data['book'], str(date.today)], 0)
+        nums = wks.get_col(2)
+        num=nums.index('')+1
+        print(num)
+        print(update.message)
+        wks.update_row(num, [num, context.chat_data['user'], context.chat_data['book'], str(date.today()), 0])
+        sh = gc.open('all_books')
+        wks = sh.sheet1
+        books = wks.get_col(4)
+        num = books.index(context.chat_data['book'])+1
+        wks.cell((num, 10)).set_value(context.chat_data['user'])
+        wks.cell((num, 6)).set_value(str(date.today()))
     elif act == 'return':
         num = search_book(wks)
         wks.update_cells((num, 5), str(date.today))
@@ -26,22 +35,26 @@ def history_books(update, context, act):
 
 
 def current_books(update, context):
-    if context.args[0] == 'return':
-        gc = pygsheets.authorize()
-        sh = gc.open('all_books')
-        wks = sh.sheet1
-        books = wks.get_col(4)
-        people = wks.get_col(10)
-        return books[people.index(update['message']['chat']['username'])]
+    gc = pygsheets.authorize()
+    sh = gc.open('all_books')
+    wks = sh.sheet1
+    books = wks.get_col(4)
+    people = wks.get_col(10)
+    u = context.chat_data['user']
+    books_taken = []
+    for i, p in enumerate(people):
+        if p == u:
+            books_taken.append(books[i])
+    return books_taken
 
 def search_books(update, context):
     gc = pygsheets.authorize()
-    sh = gc.open('books_history')
+    sh = gc.open('all_books')
     wks = sh.sheet1
-    i = 1
+    books = wks.get_col(4)
+    the_book = str(context.chat_data['book'])
     results = []
-    while wks.cell((i, 3)) != '':
-        if update.message.text in wks.cell((i, 3)):
-            results.append(wks.cell((i, 3)).value)
-        i += 1
+    for b in books:
+        if the_book in b:
+            results.append(b)
     return results
