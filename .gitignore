@@ -1,6 +1,7 @@
 .env
 .idea
 .vscode
+<<<<<<< HEAD
 venv/
 .DS_Store
 botik/
@@ -13,3 +14,6 @@ sheets.googleapis.com-python.json
 superproject-1812-90542451c977.json
 test_pygsheet.py
 token.json
+=======
+ __pycache__
+>>>>>>> 3262ccfdbab5972afd131f2ebc24b44135604e74
