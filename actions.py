@@ -60,6 +60,3 @@ def input_text(update, context):
         TakeBook(update, context)
     else:
         pass
-
-
-
