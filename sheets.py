@@ -52,9 +52,9 @@ def search_books(update, context):
     sh = gc.open('all_books')
     wks = sh.sheet1
     books = wks.get_col(4)
-    the_book = str(context.chat_data['book'])
+    the_book = context.chat_data['book'].lower()
     results = []
     for b in books:
-        if the_book in b:
+        if the_book in b.lower():
             results.append(b)
     return results
