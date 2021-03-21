@@ -40,6 +40,8 @@ def input_text(update, context):
         SearchBook(update, context)
     elif context.chat_data['screen'] == 'TakeBook':
         TakeBook(update, context)
+    else:
+        pass
 
 
 

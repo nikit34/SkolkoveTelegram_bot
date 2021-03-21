@@ -35,7 +35,7 @@ def history_books(update, context, act):
         for i in range(len(bks)):
             if bks[i] == b and usrs[i] == u:
                 num = i
-                wks.update_cells((num, 5), str(date.today))
+                wks.cell((num, 5)).set_value(str(date.today()))
         sh = gc.open('all_books')
         wks = sh.sheet1
         books = wks.get_col(4)
