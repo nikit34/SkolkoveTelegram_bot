@@ -1,4 +1,3 @@
-from datetime import date
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 
 from sheets import history_books, current_books, search_books
@@ -29,11 +28,11 @@ def TakeBook(update, context):
 
 
 def ListBooks(update, context):
-    list_books = ['Donkifot', 'tankist, dylo and transheya', 'hastya & hatasha', 'Kamasytra']  # current_books(update, context)
+    list_books = current_books(update, context)
     keyboard = []
     for i, name_book in enumerate(list_books):
         row_str = str(i + 1) + '. ' + name_book
-        row_book = [InlineKeyboardButton(row_str, callback_data='take_book')]
+        row_book = [InlineKeyboardButton(row_str, callback_data='return_book')]
         keyboard.append(row_book)
 
     context.bot.send_message(
@@ -42,8 +41,7 @@ def ListBooks(update, context):
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
     keyboard = [
-        [InlineKeyboardButton('Взять еще', callback_data='take_book'),
-        InlineKeyboardButton('Возврат в меню', callback_data='start_menu')],
+        [InlineKeyboardButton('Возврат в меню', callback_data='start_menu')],
     ]
     context.bot.send_message(
         chat_id=update.effective_chat.id,
@@ -101,8 +99,16 @@ def SearchBook(update, context):
         context.chat_data['list_book'] = [results[0]]
 
 
+def ReturnBook(update, context):
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text='Для возврата книги приди на checkpoint \n\
+и сканируй QR-code, после этого отметь возвращаемую книгу'
+    )
+
+
 def ShareBook(update, context):
-    pass
+    pass  # history_books(update, context, 'return')
 
 
 def RecordBook(update, context):

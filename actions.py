@@ -1,4 +1,4 @@
-from screens import StartMenu, TakeBook, ListBooks, SearchBook, ShareBook, RecordBook
+from screens import StartMenu, TakeBook, ListBooks, SearchBook, ShareBook, RecordBook, ReturnBook
 
 
 def start(update, context):
@@ -24,6 +24,8 @@ def buttons(update, context):
         ListBooks(update, context)
     elif query.data == 'share_book':
         ShareBook(update, context)
+    elif query.data == 'return_book':
+        ReturnBook(update, context)
     elif query.data == 'start_menu':
         context.chat_data['reply'] = True
         StartMenu(update, context)
@@ -34,8 +36,6 @@ def input_text(update, context):
         SearchBook(update, context)
     elif context.chat_data['screen'] == 'TakeBook':
         TakeBook(update, context)
-    else:
-        pass
 
 
 
