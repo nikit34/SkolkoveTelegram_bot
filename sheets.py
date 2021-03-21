@@ -19,16 +19,28 @@ def history_books(update, context, act):
     if act == 'take':
         nums = wks.get_col(2)
         num=nums.index('')+1
-        wks.update_row(num, [num, context.chat_data['user'], context.chat_data['book'], str(date.today()), 0])
+        wks.update_row(num, [num, context.chat_data.get('user'), context.chat_data['book'], str(date.today()), 0])
+        sh = gc.open('all_books')
+        wks_all = sh.sheet1
+        books = wks_all.get_col(4)
+        num_all = books.index(context.chat_data['book'])+1
+        if wks_all.cell((num_all, 10)).value != '':
+            wks.cell((num, 7)).set_value(context.chat_data.get('user'))
+        wks_all.cell((num, 10)).set_value(context.chat_data.get('user'))
+        wks_all.cell((num, 6)).set_value(str(date.today()))
+    elif act == 'return':
+        u = context.chat_data.get('user')
+        b = context.chat_data['book']
+        bks = wks.col(3); usrs = wks.col(2)
+        for i in range(len(bks)):
+            if bks[i] == b and usrs[i] == u:
+                num = i
+        wks.update_cells((num, 5), str(date.today))
         sh = gc.open('all_books')
         wks = sh.sheet1
         books = wks.get_col(4)
-        num = books.index(context.chat_data['book'])+1
-        wks.cell((num, 10)).set_value(context.chat_data['user'])
-        wks.cell((num, 6)).set_value(str(date.today()))
-    elif act == 'return':
-        num = search_book(wks)
-        wks.update_cells((num, 5), str(date.today))
+        num = books.index(context.chat_data['book']) + 1
+        wks.cell((num, 7)).set_value(str(date.today()))
         # return books[people.index(update['message']['chat']['username'])] # []
 
 
@@ -38,7 +50,7 @@ def current_books(update, context):
     wks = sh.sheet1
     books = wks.get_col(4)
     people = wks.get_col(10)
-    u = context.chat_data['user']
+    u = context.chat_data.get('user')
     books_taken = []
     for i, p in enumerate(people):
         if p == u:
