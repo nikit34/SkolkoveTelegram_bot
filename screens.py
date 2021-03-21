@@ -1,4 +1,5 @@
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
+from threading import Timer
 
 from sheets import history_books, current_books, search_books
 
@@ -160,7 +161,66 @@ def RecordBook(update, context):
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
     history_books(update, context, 'take')
-    # TODO callback 4 days + dont return book
+    keyboard = [
+        [InlineKeyboardButton('Верну позже', callback_data='pass_timeout'),
+         InlineKeyboardButton('Не могу вернуть', callback_data='break_timeout')],
+    ]
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=f'Привет! Ты уже прочитал {context.chat_data["book"]}? \n\
+Сможешь вернуть в течении следующей недели?',
+        reply_markup=InlineKeyboardMarkup(keyboard),
+        timeout=10
+    )
 
+
+def PassTimeout(update, context):
+    context.bot.send_message(
+        chat_id='-1001267184860',
+        text=f'@{context.chat_data.get("user")} взял почитать книгу \n\
+{context.chat_data["book"]} \n\
+и сказал, что вернет ее позже. Вы можете связаться с ним, \n\
+чтобы книжка не потерялась.'
+    )
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text='Хорошо, напомню через пару недель 😉'
+    )
+    t = Timer(10.0, lambda_t, (update, context))
+    t.start()
+
+
+def lambda_t(update, context):
+    keyboard = [
+        [InlineKeyboardButton('Верну позже', callback_data='pass_timeout'),
+         InlineKeyboardButton('Не могу вернуть', callback_data='break_timeout')],
+    ]
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=f'Привет! Ты уже прочитал {context.chat_data["book"]}? \n\
+    Сможешь вернуть в течении следующей недели?',
+        reply_markup=InlineKeyboardMarkup(keyboard),
+        timeout=10
+    )
+
+
+def BreakTimeout(update, context):
+    context.bot.send_message(
+        chat_id='-1001267184860',
+        text=f'@{context.chat_data.get("user")} взял книгу \n\
+{context.chat_data["book"]} \n\
+и сказал, что не сможет ее вернуть. \n\
+Вы можете связаться с ним, \n\
+чтобы книжка не потерялась.'
+    )
+    keyboard = [
+        [InlineKeyboardButton('Вернуться в меню', callback_data='start_menu')],
+    ]
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=f'Окей, наш менеджер свяжется с тобой, \n\
+чтобы помочь вернуть книжку на свое место',
+        reply_markup=InlineKeyboardMarkup(keyboard)
+    )
 
 
