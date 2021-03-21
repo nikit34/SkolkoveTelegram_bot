@@ -59,7 +59,7 @@ def ListBooks(update, context):
 def SearchBook(update, context):
     context.chat_data['book'] = update.message.text
     context.chat_data['list_book'] = []
-    results = search_books(update, context)
+    results, context.chat_data['pp'] = search_books(update, context)
     if len(results) == 0:
         keyboard = [
             [InlineKeyboardButton(f'Хорошо, я нашел {context.chat_data["book"]}', callback_data='start_menu')],

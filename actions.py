@@ -3,7 +3,11 @@ from screens import StartMenu, TakeBook, ListBooks, SearchBook, ShareBook, Recor
 
 def start(update, context):
     if context.args and context.args[0] == 'return':
-        context.bot.send_message(chat_id=update.effective_chat.id, text='return')
+        ShareBook(update, context)
+        context.bot.send_sticker(chat_id=update.effective_chat.id, sticker='CAACAgIAAxkBAAECFgNgV0B2dK7o9XsJTl--i28HBoQ3uQACsw8AAiJVuEqjk_I7TYr_aR4E')
+    elif context.args and context.args[0] == 'return2':
+        context.bot.send_sticker(chat_id=update.effective_chat.id,
+                                 sticker='CAACAgIAAxkBAAECFgNgV0B2dK7o9XsJTl--i28HBoQ3uQACsw8AAiJVuEqjk_I7TYr_aR4E')
     else:
         context.chat_data['reply'] = False
         context.chat_data["user"] = update.message.chat.username
