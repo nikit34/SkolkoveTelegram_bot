@@ -1,26 +1,18 @@
 import os
 import logging
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, InlineQueryHandler
+from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, MessageHandler, Filters
 
-from actions.actions import *
+from actions import start, buttons, input_text
 
+
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 updater = Updater(token=os.environ['TOKEN_BOT'], use_context=True)
 dispatcher = updater.dispatcher
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                     level=logging.INFO)
-
-
-start_handler = CommandHandler('start', start)
-dispatcher.add_handler(start_handler)
-
-echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)
-dispatcher.add_handler(echo_handler)
-
-caps_handler = CommandHandler('caps', caps)
-dispatcher.add_handler(caps_handler)
-
-
+dispatcher.add_handler(CommandHandler('start', start))
+dispatcher.add_handler(CallbackQueryHandler(buttons))
+dispatcher.add_handler(MessageHandler(Filters.text & (~Filters.command), input_text))
 
 updater.start_polling()
+updater.idle()
