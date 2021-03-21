@@ -29,7 +29,11 @@ def history_books(update, context, act):
         wks.cell((num, 10)).set_value(context.chat_data['user'])
         wks.cell((num, 6)).set_value(str(date.today()))
     elif act == 'return':
-        num = search_book(wks)
+        u = context.chat_data['user']
+        b = context.chat_data['book']
+        bks = wks.col(3); usrs = wks.col(2)
+
+        bks[bks.index(context.chat_data['book'])]
         wks.update_cells((num, 5), str(date.today))
         # return books[people.index(update['message']['chat']['username'])] # []
 
@@ -55,6 +59,6 @@ def search_books(update, context):
     the_book = str(context.chat_data['book'])
     results = []
     for b in books:
-        if the_book in b:
+        if the_book.lower() in b.lower():
             results.append(b)
     return results
