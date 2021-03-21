@@ -14,10 +14,8 @@ def buttons(update, context):
     if query.data == 'take_book':
         TakeBook(update, context)
     elif query.data.startswith('record_book'):
-        context.bot.send_message(
-            chat_id='https://t.me/joinchat/pI3uWSfsbPZjY2Qy', # TODO testing
-            text=f'{update.message.chat.username} взял почитать книгу {context.chat_data["book"]}'
-        )
+        name_book = context.chat_data['list_book'][int(query.data[12:])]
+        context.chat_data['book'] = name_book
         # change table (nik, data)
         pass
         RecordBook(update, context)
@@ -31,6 +29,8 @@ def buttons(update, context):
 def input_text(update, context):
     if context.chat_data['screen'] == 'SearchBook':
         SearchBook(update, context)
+    elif context.chat_data['screen'] == 'TakeBook':
+        TakeBook(update, context)
     else:
         pass
 

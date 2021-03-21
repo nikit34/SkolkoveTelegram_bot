@@ -14,13 +14,9 @@ def StartMenu(update):
 
 
 def TakeBook(update, context):
-    keyboard = [
-        [InlineKeyboardButton('Взять еще', callback_data='take_book')],
-    ]
     context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text='Введи название / автора',
-        reply_markup=InlineKeyboardMarkup(keyboard)
+        text='Введи название / автора'
     )
     context.chat_data['screen'] = 'SearchBook'
 
@@ -50,8 +46,7 @@ def ListBooks(update, context):
 
 
 def SearchBook(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text=update.message.text)
-    results = []  # search_books(update.message.text)
+    results = current_books(update, context)
     if len(results) == 0:
         context.bot.send_message(
             chat_id=update.effective_chat.id,
@@ -70,15 +65,16 @@ def SearchBook(update, context):
     elif len(results) > 1 and len(results) <= 5:
         keyboard = []
         for i, result in enumerate(results):
-            keyboard.append([InlineKeyboardButton(f'{result[i]} Забрать', callback_data=f'record_book_{i}')])
+            keyboard.append([InlineKeyboardButton(f'{i}. {result}', callback_data=f'record_book_{i}')])
         context.bot.send_message(
             chat_id=update.effective_chat.id,
             text='Похоже, ты выбрал одну из этих книг👇🏼 \n \
                  Нажми на ту, которую ты выбрал и забирай читать!',
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
+        context.chat_data['list_book'] = results
     elif len(results) == 1:
-        keyboard = [[InlineKeyboardButton(f'{results[0]} Забрать', callback_data='record_book')]]
+        keyboard = [[InlineKeyboardButton(f'{results[0]}', callback_data='record_book_1')]]
         context.bot.send_message(
             chat_id=update.effective_chat.id,
             text='Похоже, ты выбрал эту книжку 👇🏼 \n \
@@ -93,6 +89,10 @@ def ShareBook(update, context):
 
 
 def RecordBook(update, context):
+    context.bot.send_message(
+        chat_id='https://t.me/joinchat/pI3uWSfsbPZjY2Qy',
+        text=f'{update.message.chat.username} взял почитать книгу {context.chat_data["book"]}'
+    )
     keyboard = [
         [InlineKeyboardButton('Взять еще', callback_data='take_book')],
     ]
@@ -106,9 +106,7 @@ def RecordBook(update, context):
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
     context.chat_data['screen'] = 'TakeBook'
-
-    date_take = date
-    while time_take - datetime.now() > now.strftime
+    # TODO callback 4 days + dont return book
 
 
 
