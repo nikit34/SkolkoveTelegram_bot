@@ -19,8 +19,6 @@ def history_books(update, context, act):
     if act == 'take':
         nums = wks.get_col(2)
         num=nums.index('')+1
-        print(num)
-        print(update.message)
         wks.update_row(num, [num, context.chat_data['user'], context.chat_data['book'], str(date.today()), 0])
         sh = gc.open('all_books')
         wks = sh.sheet1
