@@ -32,7 +32,7 @@ def ListBooks(update, context):
     keyboard = []
     for i, name_book in enumerate(list_books):
         row_str = str(i + 1) + '. ' + name_book
-        row_book = [InlineKeyboardButton(row_str, callback_data='return_book')]
+        row_book = [InlineKeyboardButton(row_str, callback_data='info_book')]
         keyboard.append(row_book)
 
     context.bot.send_message(
@@ -99,7 +99,7 @@ def SearchBook(update, context):
         context.chat_data['list_book'] = [results[0]]
 
 
-def ReturnBook(update, context):
+def InfoBook(update, context):
     context.bot.send_message(
         chat_id=update.effective_chat.id,
         text='Для возврата книги приди на checkpoint \n\
@@ -107,16 +107,44 @@ def ReturnBook(update, context):
     )
 
 
+def ReturnBook(update, context):
+    context.chat_data['list_book'] = current_books(update, context)
+    keyboard = []
+    for i, name_book in enumerate(context.chat_data['list_book']):
+        row_str = str(i + 1) + '. ' + name_book
+        row_book = [InlineKeyboardButton(row_str, callback_data=f'return_book_{i}')]
+        keyboard.append(row_book)
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text='Выбери книгу для возврата',
+        reply_markup=InlineKeyboardMarkup(keyboard)
+    )
+
+def HistoryBook(update, context):
+    history_books(update, context, 'return')
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text='Книга успешно возвращена'
+    )
+    context.bot.send_sticker(
+        chat_id=update.effective_chat.id,
+        sticker='CAACAgIAAxkBAAECFgNgV0B2dK7o9XsJTl--i28HBoQ3uQACsw8AAiJVuEqjk_I7TYr_aR4E'
+    )
+    context.bot.send_message(
+        chat_id='-1001267184860',
+        text=f'@{context.chat_data.get("user")} вернул книгу {context.chat_data["book"]}'
+    )
+
+
 def ShareBook(update, context):
-    pass  # history_books(update, context, 'return')
+    pass
 
 
 def RecordBook(update, context):
-   # context.bot.send_message(
-   #     chat_id='-1001267184860',
-   #     text=f'@{context.chat_data.get("user")} взял почитать книгу {context.chat_data["book"]}'
-   #     # text=f'"{context.chat_data.get("user")} взял почитать книгу {context.chat_data["book"]}'
-   # )
+    context.bot.send_message(
+       chat_id='-1001267184860',
+       text=f'@{context.chat_data.get("user")} взял почитать книгу {context.chat_data["book"]}'
+    )
     keyboard = [
         [InlineKeyboardButton('Взять еще', callback_data='take_book'),
         InlineKeyboardButton('Возврат в меню', callback_data='start_menu')],
