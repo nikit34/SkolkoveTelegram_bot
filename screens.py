@@ -8,7 +8,7 @@ def StartMenu(update, context):
     keyboard = [
         [InlineKeyboardButton('Взять', callback_data='take_book')],
         [InlineKeyboardButton('Мои книги', callback_data='list_book')],
-        [InlineKeyboardButton('Поделиться', callback_data='share_book')],
+        [InlineKeyboardButton('Поделиться', callback_data='share_point')],
     ]
     if context.chat_data['reply']:
         context.bot.send_message(
@@ -137,8 +137,34 @@ def HistoryBook(update, context, pickpoint):
     )
 
 
-def ShareBook(update, context):
-    pass
+def SharePickpoint(update, context):
+    context.chat_data['list_book'] = current_books(update, context)
+    keyboard = [
+        [InlineKeyboardButton('Первый пикпоинт', callback_data='share_book_1'),
+        InlineKeyboardButton('Второй пикпоинт', callback_data='share_book_2')],
+    ]
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text='Выбери пикпоинт',
+        reply_markup=InlineKeyboardMarkup(keyboard)
+    )
+
+
+def ShareBook(update, context, pickpoint):
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text='Выбери книгу для добавления'
+    )
+    keyboard = []
+    for i, name_book in enumerate(context.chat_data['list_book']):
+        row_str = str(i + 1) + '. ' + name_book
+        row_book = [InlineKeyboardButton(row_str, callback_data=f'shared_book_{i}_{pickpoint}')]
+        keyboard.append(row_book)
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text='Выбери книгу для добавления',
+        reply_markup=InlineKeyboardMarkup(keyboard)
+    )
 
 
 def RecordBook(update, context):

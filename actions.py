@@ -8,7 +8,8 @@ from screens import StartMenu, \
     InfoBook, \
     HistoryBook, \
     PassTimeout, \
-    BreakTimeout
+    BreakTimeout, \
+    SharePickpoint
 
 
 def start(update, context):
@@ -33,8 +34,13 @@ def buttons(update, context):
         RecordBook(update, context)
     elif query.data == 'list_book':
         ListBooks(update, context)
-    elif query.data == 'share_book':
-        ShareBook(update, context)
+    elif query.data == 'share_point':
+        SharePickpoint(update, context)
+    elif query.data.startswith('share_point'):
+        if query.data[11] == '1':
+            ShareBook(update, context, 'return')
+        elif query.data[11] == '2':
+            ShareBook(update, context, 'return2')
     elif query.data == 'info_book':
         InfoBook(update, context)
     elif query.data.startswith('return_book'):
