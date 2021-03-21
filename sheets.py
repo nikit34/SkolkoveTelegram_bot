@@ -13,6 +13,7 @@ def history_books(update, context):
 def current_books(update, context):
     if context.args[0] == 'return':
         pass
+    return ['Donkifot', 'tankist, dylo and transheya', 'hastya & hatasha', 'Kamasytra']
 
 
 def search_books(update, context):

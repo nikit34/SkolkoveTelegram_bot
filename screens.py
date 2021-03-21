@@ -1,3 +1,4 @@
+from datetime import date
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 
 from sheets import history_books, current_books, search_books
@@ -25,7 +26,7 @@ def TakeBook(update, context):
 
 
 def ListBooks(update, context):
-    list_books = history_books(update, context)
+    list_books = current_books(update, context)
     keyboard = []
 
     for i, name_book in enumerate(list_books):
@@ -77,22 +78,37 @@ def SearchBook(update, context):
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
     elif len(results) == 1:
-        keyboard = [[InlineKeyboardButton(f'{results[0]} Забрать', callback_data='record_book_f')]]
+        keyboard = [[InlineKeyboardButton(f'{results[0]} Забрать', callback_data='record_book')]]
         context.bot.send_message(
             chat_id=update.effective_chat.id,
             text='Похоже, ты выбрал эту книжку 👇🏼 \n \
                  Нажми на нее и забирай читать!',
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
-        context.chat_data['book'] =
+        context.chat_data['book'] = results[0]
 
 
 def ShareBook(update, context):
     pass
 
+
 def RecordBook(update, context):
+    keyboard = [
+        [InlineKeyboardButton('Взять еще', callback_data='take_book')],
+    ]
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text='Спасибо! Мы записали книжку, которую вы взяли почитать. \n \
+            Пожалуйста, постарайтесь вернуть ее в течении 4-х недель 🙌🏼 \n \
+            Мы напомним об этом через 3 недели. Если не успеете вернуть, можно \n \
+            будет отложить дату возврата на пару недель 😉 \n \
+            Не забывайте, что многие тоже хотят прочитать эту книжку! 🙂',
+        reply_markup=InlineKeyboardMarkup(keyboard)
+    )
+    context.chat_data['screen'] = 'TakeBook'
 
-
+    date_take = date
+    while time_take - datetime.now() > now.strftime
 
 
 

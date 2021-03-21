@@ -1,4 +1,4 @@
-from screens import StartMenu, TakeBook, ListBooks, SearchBook, ShareBook
+from screens import StartMenu, TakeBook, ListBooks, SearchBook, ShareBook, RecordBook
 
 
 def start(update, context):
@@ -14,9 +14,12 @@ def buttons(update, context):
     if query.data == 'take_book':
         TakeBook(update, context)
     elif query.data.startswith('record_book'):
-        if query.data[12] == 'f':
-            # TODO new msg to chat
-
+        context.bot.send_message(
+            chat_id='https://t.me/joinchat/pI3uWSfsbPZjY2Qy', # TODO testing
+            text=f'{update.message.chat.username} взял почитать книгу {context.chat_data["book"]}'
+        )
+        # change table (nik, data)
+        pass
         RecordBook(update, context)
     elif query.data == 'list_book':
         ListBooks(update, context)
